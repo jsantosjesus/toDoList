@@ -43,7 +43,7 @@
             type="button"
             title="Marcar tarefa como concluída"
             class="btn btn-danger m-1"
-            @click="excluirTarefa(i)"
+            @click="excluirTarefa(i, tarefas)"
           >
             <i class="fas fa-close"></i>
           </button>
@@ -67,12 +67,21 @@
         <div>
           <button
             type="button"
-            title="Marcar tarefa como concluída"
+            title="Refazer tarefa"
             class="btn btn-primary m-1"
-            @click="refazerTarefa(i)"
+            @click="refazerTarefa(i, tarefasConcluidas)"
           >
             <i class="fas fa-recycle"></i>
           </button>
+          <button
+            type="button"
+            title="Excluir tarefa"
+            class="btn btn-danger m-1"
+            @click="excluirTarefa(i, tarefasConcluidas)"
+          >
+            <i class="fas fa-close"></i>
+          </button>
+          
         </div>
       </li>
     </ul>
@@ -93,11 +102,19 @@
         <div>
           <button
             type="button"
-            title="Marcar tarefa como concluída"
+            title="Reciclar tarefa"
             class="btn btn-primary m-1"
-            @click="refazerTarefa(i)"
+            @click="refazerTarefa(i, tarefasExcluidas)"
           >
             <i class="fas fa-recycle"></i>
+          </button>
+          <button
+            type="button"
+            title="Excluir tarefa"
+            class="btn btn-danger m-1"
+            @click="excluirTarefa(i, tarefasExcluidas)"
+          >
+            <i class="fas fa-close"></i>
           </button>
         </div>
       </li>
@@ -123,8 +140,19 @@ function marcarConcluida(index) {
   tarefasConcluidas.unshift(...tarefaConcluida);
 }
 
-function excluirTarefa(index) {
-  const tarefaExcluida = tarefas.splice(index, 1);
-  tarefasExcluidas.unshift(...tarefaExcluida);
+function excluirTarefa(index, lista) {
+  if(lista == tarefasExcluidas && !confirm(`Confirme a exclusão permantente da tarefa ${lista[index]} ? `)){
+    return
+  }
+  const tarefaExcluida = lista.splice(index, 1)
+  if(lista != tarefasExcluidas){
+    tarefasExcluidas.unshift(...tarefaExcluida);
+  }
+  
+}
+
+function refazerTarefa(index, lista) {
+  const tarefaRefeita = lista.splice(index, 1);
+  tarefas.unshift(...tarefaRefeita);
 }
 </script>
